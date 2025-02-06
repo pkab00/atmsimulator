@@ -13,6 +13,12 @@ public class User {
         this.account = new Account(cardNumber);
     }
 
+    @Override
+    public String toString(){
+        return String.format("{\n\tSurname: %s\n\tName: %s\n\tFather name: %s\n\tAccount: %s\n}",
+        surname, name, fatherName, account.toString());
+    }
+
     public String getSurname() {
         return surname;
     }

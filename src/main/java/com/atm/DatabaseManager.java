@@ -61,8 +61,7 @@ public class DatabaseManager {
     }
 
     public static void main(String[] args) {
-        System.out.println(userExists("222"));
-        addNewUser("222", 1234, "Bushukin", "Vadim", "Dmitrievich");
-        System.out.println(userExists("222"));
+        User us = new User("Bushukin", "Vadim", "Dmitrievich", "222");
+        System.out.println(us);
     }
 }

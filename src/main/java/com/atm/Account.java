@@ -12,6 +12,12 @@ public class Account {
         this.withdrawLimit = 100000f;
     }
 
+    @Override
+    public String toString(){
+        return String.format("[\n\t\tCard number: %s\n\t\tBalance: %.2f\n\t\tLimit: %.2f\n\t]",
+        cardNumber, balance, withdrawLimit);
+    }
+
     public void increaseBalance(double money){
         balance += money;
     }
