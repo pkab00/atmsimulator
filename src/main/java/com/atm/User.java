@@ -2,13 +2,13 @@ package com.atm;
 
 public class User {
     private String surname;
-    private String firstName;
+    private String name;
     private String fatherName;
     private Account account;
 
     public User(String surname, String firstName, String fatherName, String cardNumber){
         this.surname = surname;
-        this.firstName = firstName;
+        this.name = firstName;
         this.fatherName = fatherName;
         this.account = new Account(cardNumber);
     }
@@ -17,8 +17,8 @@ public class User {
         return surname;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
     public String getFatherName() {
@@ -26,7 +26,7 @@ public class User {
     }
 
     public String getFullName(){
-        return String.format("%s %s %s", surname, firstName, fatherName);
+        return String.format("%s %s %s", surname, name, fatherName);
     }
 
     public Account getAccount() {
