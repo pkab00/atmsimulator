@@ -6,9 +6,9 @@ public class User {
     private String fatherName;
     private Account account;
 
-    public User(String surname, String firstName, String fatherName, String cardNumber){
+    public User(String surname, String name, String fatherName, String cardNumber){
         this.surname = surname;
-        this.name = firstName;
+        this.name = name;
         this.fatherName = fatherName;
         this.account = new Account(cardNumber);
     }

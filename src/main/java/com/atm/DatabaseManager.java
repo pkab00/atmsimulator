@@ -2,6 +2,7 @@ package com.atm;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -13,7 +14,6 @@ public class DatabaseManager {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(DB_URL);
-            System.out.println("Соединение с БД установлено");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -23,8 +23,9 @@ public class DatabaseManager {
     public static boolean userExists(String cardNumber){
         Connection conn = connect();
         try {
-            ResultSet set = conn.prepareStatement(String.format("SELECT * FROM USERS "
-                                                 +"WHERE CARD_NUMBER = %S", cardNumber)).executeQuery();
+            PreparedStatement prepStat = conn.prepareStatement("SELECT * FROM USERS WHERE CARD_NUMBER = ?");
+            prepStat.setString(1, cardNumber);
+            ResultSet set = prepStat.executeQuery();
             if(set.next()){
                 return true;
             }
@@ -35,7 +36,33 @@ public class DatabaseManager {
         return false;
     }
 
+    public static User addNewUser(String cardNumber, int PIN, String surname, String name, String fatherName){
+        Connection conn = connect();
+        String stat1 = "INSERT INTO USERS VALUES (?, ?, ?, ?, ?)";
+        String stat2 = "INSERT INTO ACCOUNTS VALUES (?, 0.0, 100000.0)";
+        try {
+            PreparedStatement prepStat1 = conn.prepareStatement(stat1);
+            prepStat1.setString(1, cardNumber);
+            prepStat1.setInt(2, PIN);
+            prepStat1.setString(3, surname);
+            prepStat1.setString(4, name);
+            prepStat1.setString(5, fatherName);
+            PreparedStatement prepStat2 = conn.prepareStatement(stat2);
+            prepStat2.setString(1, cardNumber);
+            prepStat1.executeUpdate();
+            prepStat2.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        };
+
+        User newUser = new User(surname, name, fatherName, cardNumber);
+        return newUser;
+    }
+
     public static void main(String[] args) {
+        System.out.println(userExists("222"));
+        addNewUser("222", 1234, "Bushukin", "Vadim", "Dmitrievich");
         System.out.println(userExists("222"));
     }
 }
