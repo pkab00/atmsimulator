@@ -2,6 +2,7 @@ package com.atm;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DatabaseManager {
@@ -19,7 +20,22 @@ public class DatabaseManager {
         return conn;
     }
 
-    public static void main(String[] args) {
+    public static boolean userExists(String cardNumber){
         Connection conn = connect();
+        try {
+            ResultSet set = conn.prepareStatement(String.format("SELECT * FROM USERS "
+                                                 +"WHERE CARD_NUMBER = %S", cardNumber)).executeQuery();
+            if(set.next()){
+                return true;
+            }
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(userExists("222"));
     }
 }
