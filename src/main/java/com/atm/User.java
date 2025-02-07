@@ -10,7 +10,7 @@ public class User {
         this.surname = surname;
         this.name = name;
         this.fatherName = fatherName;
-        this.account = new Account(cardNumber);
+        this.account = Account.newEmptyAccount(cardNumber);
     }
 
     @Override

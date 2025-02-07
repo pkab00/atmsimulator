@@ -5,11 +5,18 @@ public class Account {
     private double balance;
     private double withdrawLimit;
 
-    // Дефолтный конструтор для создания пустого счёта
-    public Account(String cardNumber){
+    private Account(String cardNumber){
         this.cardNumber = cardNumber;
         this.balance = 0f;
         this.withdrawLimit = 100000f;
+    }
+
+    // Фабричный метод для создания пустого счёта
+    public static Account newEmptyAccount(String cardNumber){
+        if(DatabaseManager.userExists(cardNumber)){
+            return null;
+        }
+        return new Account(cardNumber);
     }
 
     @Override
