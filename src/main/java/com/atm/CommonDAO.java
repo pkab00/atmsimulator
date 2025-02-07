@@ -80,6 +80,7 @@ public class CommonDAO {
                         break;
                     case USERS:
                         outputDTO = new UserDTO()
+                        .setPIN(res.getInt("PIN_HASH"))
                         .setSurname(res.getString("SURNAME"))
                         .setName(res.getString("NAME"))
                         .setFatherName(res.getString("FATHER_NAME"));
@@ -94,13 +95,14 @@ public class CommonDAO {
         }
         return outputDTO;
         // TODO: убедиться, что res закрывается после использования
+        // TODO: внедрить хэширование/дехэширование PIN
     }
 
     public static void main(String[] args) {
-        //CommonDAO.addNewUser("12345", 1234, "Pushkin", "Alexander", "Sergeyevich");
-        UserDTO us = (UserDTO)CommonDAO.requestData("12345", REQUEST_TYPE.USERS);
-        AccountDTO acc = (AccountDTO)CommonDAO.requestData("12345", REQUEST_TYPE.ACCOUNTS);
-        System.out.println(String.format("%s %s %s", us.getSurname(), us.getName(), us.getFatherName()));
-        System.out.println(String.format("%s %f %f", acc.getCardNumber(), acc.getBalance(), acc.getWithdrawLimit()));
+        User pushkin = User.getExistingUser(1234, "12345");
+        System.out.println(pushkin);
+
+        User me = User.getNewUser("5555", 5555, "Bushukin", "Vadim", "Dmitriyevich");
+        System.out.println(me);
     }
 }

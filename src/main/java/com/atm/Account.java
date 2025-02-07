@@ -11,12 +11,20 @@ public class Account {
         this.withdrawLimit = 100000f;
     }
 
+    private Account(String cardNumber, double balance, double withdrawLimit){
+        this.cardNumber = cardNumber;
+        this.balance = balance;
+        this.withdrawLimit = withdrawLimit;
+    }
+
     // Фабричный метод для создания пустого счёта
-    public static Account newEmptyAccount(String cardNumber){
-        if(CommonDAO.userExists(cardNumber)){
-            return null;
-        }
+    public static Account getEmptyAccount(String cardNumber){
         return new Account(cardNumber);
+    }
+
+    // Фабричный метод для преобразования DAO в объект Account
+    public static Account getExistingAccount(AccountDTO data){
+        return new Account(data.getCardNumber(), data.getBalance(), data.getWithdrawLimit());
     }
 
     @Override
