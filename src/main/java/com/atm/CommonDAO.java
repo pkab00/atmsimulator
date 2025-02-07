@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.zip.GZIPInputStream;
 
 enum REQUEST_TYPE{
     USERS,
@@ -73,15 +74,15 @@ public class CommonDAO {
                 switch(type){
                     case ACCOUNTS:
                         outputDTO = new AccountDTO()
-                        .setCardNumber(res.getString(1))
-                        .setBalance(res.getDouble(2))
-                        .setWithdrawLimit(res.getDouble(3));
+                        .setCardNumber(res.getString("CARD_NUMBER"))
+                        .setBalance(res.getDouble("BALANCE"))
+                        .setWithdrawLimit(res.getDouble("LIMIT"));
                         break;
                     case USERS:
                         outputDTO = new UserDTO()
-                        .setSurname(res.getString(1))
-                        .setName(res.getString(2))
-                        .setFatherName(res.getString(3));
+                        .setSurname(res.getString("SURNAME"))
+                        .setName(res.getString("NAME"))
+                        .setFatherName(res.getString("FATHER_NAME"));
                         break;
                 }
             }
@@ -96,7 +97,10 @@ public class CommonDAO {
     }
 
     public static void main(String[] args) {
-        User us = new User("Bushukin", "Vadim", "Dmitrievich", "222");
-        System.out.println(us);
+        //CommonDAO.addNewUser("12345", 1234, "Pushkin", "Alexander", "Sergeyevich");
+        UserDTO us = (UserDTO)CommonDAO.requestData("12345", REQUEST_TYPE.USERS);
+        AccountDTO acc = (AccountDTO)CommonDAO.requestData("12345", REQUEST_TYPE.ACCOUNTS);
+        System.out.println(String.format("%s %s %s", us.getSurname(), us.getName(), us.getFatherName()));
+        System.out.println(String.format("%s %f %f", acc.getCardNumber(), acc.getBalance(), acc.getWithdrawLimit()));
     }
 }
