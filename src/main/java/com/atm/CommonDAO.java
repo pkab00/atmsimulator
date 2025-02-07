@@ -11,10 +11,10 @@ enum REQUEST_TYPE{
     ACCOUNTS
 }
 
-public class DatabaseManager {
+public class CommonDAO {
     private static final String DB_URL = "jdbc:sqlite:src\\main\\resources\\database.db";
 
-    public static Connection connect() {
+    private static Connection connect() {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(DB_URL);
@@ -24,7 +24,7 @@ public class DatabaseManager {
         return conn;
     }
 
-    public static boolean userExists(String cardNumber){
+    private static boolean userExists(String cardNumber){
         Connection conn = connect();
         try {
             PreparedStatement prepStat = conn.prepareStatement("SELECT * FROM USERS WHERE CARD_NUMBER = ?");
@@ -61,23 +61,38 @@ public class DatabaseManager {
         };
     }
 
-    public static ResultSet requestData(String cardNumber, REQUEST_TYPE type){
-        if(!userExists(cardNumber)){
-            return null;
-        }
+    public static iDTO requestData(String cardNumber, REQUEST_TYPE type){
         ResultSet res = null;
-        Connection conn = connect();
-        String sql = "SELECT * FROM ? WHERE CARD_NUMBER = ?";
-        try {
+        iDTO outputDTO = null;
+        String sql = "SELECT * FROM " + type.toString() + " WHERE CARD_NUMBER = ?";
+        try(Connection conn = connect()) {
             PreparedStatement prep = conn.prepareStatement(sql);
-            prep.setString(1, type.toString());
-            prep.setString(2, cardNumber);
+            prep.setString(1, cardNumber);
             res = prep.executeQuery();
-            conn.close();
+            if(res.next()){
+                switch(type){
+                    case ACCOUNTS:
+                        outputDTO = new AccountDTO()
+                        .setCardNumber(res.getString(1))
+                        .setBalance(res.getDouble(2))
+                        .setWithdrawLimit(res.getDouble(3));
+                        break;
+                    case USERS:
+                        outputDTO = new UserDTO()
+                        .setSurname(res.getString(1))
+                        .setName(res.getString(2))
+                        .setFatherName(res.getString(3));
+                        break;
+                }
+            }
+            else{
+                res = null;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return res;
+        return outputDTO;
+        // TODO: убедиться, что res закрывается после использования
     }
 
     public static void main(String[] args) {

@@ -13,7 +13,7 @@ public class Account {
 
     // Фабричный метод для создания пустого счёта
     public static Account newEmptyAccount(String cardNumber){
-        if(DatabaseManager.userExists(cardNumber)){
+        if(CommonDAO.userExists(cardNumber)){
             return null;
         }
         return new Account(cardNumber);
