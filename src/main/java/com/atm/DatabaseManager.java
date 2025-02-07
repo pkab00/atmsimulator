@@ -6,9 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+enum REQUEST_TYPE{
+    USERS,
+    ACCOUNTS
+}
+
 public class DatabaseManager {
     private static final String DB_URL = "jdbc:sqlite:src\\main\\resources\\database.db";
-    
 
     public static Connection connect() {
         Connection conn = null;
@@ -36,7 +40,7 @@ public class DatabaseManager {
         return false;
     }
 
-    public static User addNewUser(String cardNumber, int PIN, String surname, String name, String fatherName){
+    public static void addNewUser(String cardNumber, int PIN, String surname, String name, String fatherName){
         Connection conn = connect();
         String stat1 = "INSERT INTO USERS VALUES (?, ?, ?, ?, ?)";
         String stat2 = "INSERT INTO ACCOUNTS VALUES (?, 0.0, 100000.0)";
@@ -55,9 +59,25 @@ public class DatabaseManager {
         } catch (SQLException e) {
             e.printStackTrace();
         };
+    }
 
-        User newUser = new User(surname, name, fatherName, cardNumber);
-        return newUser;
+    public static ResultSet requestData(String cardNumber, REQUEST_TYPE type){
+        if(!userExists(cardNumber)){
+            return null;
+        }
+        ResultSet res = null;
+        Connection conn = connect();
+        String sql = "SELECT * FROM ? WHERE CARD_NUMBER = ?";
+        try {
+            PreparedStatement prep = conn.prepareStatement(sql);
+            prep.setString(1, type.toString());
+            prep.setString(2, cardNumber);
+            res = prep.executeQuery();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
     public static void main(String[] args) {
