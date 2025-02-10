@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.zip.GZIPInputStream;
 
 enum REQUEST_TYPE{
     USERS,
@@ -23,22 +22,6 @@ public class CommonDAO {
             System.out.println(e.getMessage());
         }
         return conn;
-    }
-
-    private static boolean userExists(String cardNumber){
-        Connection conn = connect();
-        try {
-            PreparedStatement prepStat = conn.prepareStatement("SELECT * FROM USERS WHERE CARD_NUMBER = ?");
-            prepStat.setString(1, cardNumber);
-            ResultSet set = prepStat.executeQuery();
-            if(set.next()){
-                return true;
-            }
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     public static void addNewUser(String cardNumber, String PIN, String surname, String name, String fatherName){
@@ -98,7 +81,6 @@ public class CommonDAO {
         }
         return outputDTO;
         // TODO: убедиться, что res закрывается после использования
-        // TODO: внедрить хэширование/дехэширование PIN
     }
 
     public static void main(String[] args) {
