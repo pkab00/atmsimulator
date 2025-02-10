@@ -83,7 +83,7 @@ public class CommonDAO {
                     case USERS:
                         outputDTO = new UserDTO()
                         // добавить дехэширование
-                        .setPIN(res.getString("PIN_HASH"))
+                        .setPINhash(res.getString("PIN_HASH"))
                         .setSurname(res.getString("SURNAME"))
                         .setName(res.getString("NAME"))
                         .setFatherName(res.getString("FATHER_NAME"));
@@ -102,12 +102,6 @@ public class CommonDAO {
     }
 
     public static void main(String[] args) {
-        //User pushkin = User.getExistingUser("4444", "12345");
-        //System.out.println(pushkin);
-
-        //User me = User.getExistingUser("5555", "5555");
-        //System.out.println(me);
-
         User oleg = User.getNewUser("666666", "9999", 
         "Sheps", "Oleg", "Nikolayevich");
         System.out.println(oleg);

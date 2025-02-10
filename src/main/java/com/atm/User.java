@@ -22,7 +22,7 @@ public class User {
 
     // Фабричный метод, регистрирует нового пользователя в базе и возвращает объект User
     public static User getNewUser(String cardNumber, String PIN, String surname, String name, String fatherName){
-        CommonDAO.addNewUser(cardNumber, PIN, surname, name, fatherName);
+        CommonDAO.addNewUser(cardNumber, HashHandler.hash(PIN), surname, name, fatherName);
         return new User(surname, name, fatherName, cardNumber);
     }
 
@@ -34,7 +34,7 @@ public class User {
         AccountDTO accountData = (AccountDTO)CommonDAO.requestData(cardNumber, REQUEST_TYPE.ACCOUNTS);
 
         if(userData == null || accountData == null) return null;
-        if(!userData.getPIN().equals(PIN)) return null;
+        if(!HashHandler.compare(PIN, userData.getPINhash())) return null;
 
         User newUser = new User(userData.getSurname(), userData.getName(), userData.getFatherName(), accountData);
         return newUser;
