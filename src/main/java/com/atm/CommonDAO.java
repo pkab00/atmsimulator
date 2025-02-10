@@ -41,14 +41,16 @@ public class CommonDAO {
         return false;
     }
 
-    public static void addNewUser(String cardNumber, int PIN, String surname, String name, String fatherName){
+    public static void addNewUser(String cardNumber, String PIN, String surname, String name, String fatherName){
         Connection conn = connect();
         String stat1 = "INSERT INTO USERS VALUES (?, ?, ?, ?, ?)";
         String stat2 = "INSERT INTO ACCOUNTS VALUES (?, 0.0, 100000.0)";
+        // Заменить эту строку на вызов метода хэширования
+        String PINhash = String.valueOf(PIN);
         try {
             PreparedStatement prepStat1 = conn.prepareStatement(stat1);
             prepStat1.setString(1, cardNumber);
-            prepStat1.setInt(2, PIN);
+            prepStat1.setString(2, PINhash);
             prepStat1.setString(3, surname);
             prepStat1.setString(4, name);
             prepStat1.setString(5, fatherName);
@@ -80,7 +82,8 @@ public class CommonDAO {
                         break;
                     case USERS:
                         outputDTO = new UserDTO()
-                        .setPIN(res.getInt("PIN_HASH"))
+                        // добавить дехэширование
+                        .setPIN(res.getString("PIN_HASH"))
                         .setSurname(res.getString("SURNAME"))
                         .setName(res.getString("NAME"))
                         .setFatherName(res.getString("FATHER_NAME"));
@@ -99,10 +102,16 @@ public class CommonDAO {
     }
 
     public static void main(String[] args) {
-        User pushkin = User.getExistingUser(1234, "12345");
-        System.out.println(pushkin);
+        //User pushkin = User.getExistingUser("4444", "12345");
+        //System.out.println(pushkin);
 
-        User me = User.getNewUser("5555", 5555, "Bushukin", "Vadim", "Dmitriyevich");
-        System.out.println(me);
+        //User me = User.getExistingUser("5555", "5555");
+        //System.out.println(me);
+
+        User oleg = User.getNewUser("666666", "9999", 
+        "Sheps", "Oleg", "Nikolayevich");
+        System.out.println(oleg);
+        oleg = User.getExistingUser("9999", "666666");
+        System.out.println(oleg);
     }
 }

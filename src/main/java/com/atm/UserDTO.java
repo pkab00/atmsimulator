@@ -1,7 +1,7 @@
 package com.atm;
 
 public class UserDTO implements iDTO {
-    private int PIN;
+    private String PIN;
     private String surname;
     private String name;
     private String fatherName;
@@ -10,12 +10,12 @@ public class UserDTO implements iDTO {
 
     public UserDTO(){}
 
-    public int getPIN() {
+    public String getPIN() {
         return PIN;
     }
 
-    public UserDTO setPIN(int pIN) {
-        PIN = pIN;
+    public UserDTO setPIN(String PIN) {
+        this.PIN = PIN;
         return this;
     }
 
