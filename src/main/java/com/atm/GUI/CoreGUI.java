@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import javax.swing.*;
 
-public class CoreGUI extends JFrame {
+public abstract class CoreGUI extends JFrame {
     protected static final String GRAPHICS = "src\\main\\resources\\graphics";
     protected Container corePane = getRootPane();
     protected Font coreFont = loadFont();
@@ -14,8 +14,6 @@ public class CoreGUI extends JFrame {
     protected CoreGUI(){
         setIconImage(new ImageIcon(GRAPHICS+"\\app-icon.png").getImage());
         setVisible(true);
-        // ...
-    
     }
 
     protected Font loadFont(){

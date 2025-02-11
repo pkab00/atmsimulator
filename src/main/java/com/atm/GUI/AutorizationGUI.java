@@ -1,5 +1,7 @@
 package com.atm.GUI;
 
+import java.awt.CompositeContext;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -13,19 +15,19 @@ public class AutorizationGUI extends CoreGUI {
     protected AutorizationGUI(String titleString){
         super();
         setTitle(titleString);
-        setSize(400, 750);
+        setSize(500, 700);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         BoxLayout layout = new BoxLayout(corePane, BoxLayout.Y_AXIS);
         corePane.setLayout(layout);
         JLabel titleLabel = new JLabel(titleString);
-        titleLabel.setFont(coreFont.deriveFont(20f));
+        titleLabel.setFont(coreFont.deriveFont(25f));
         corePane.add(titleLabel);
-        corePane.add(Box.createHorizontalStrut(5));
+        corePane.add(Box.createHorizontalStrut(1));
     }
 
-    protected JPanel createInputPanel(String title, String format, String placeholder){
+    protected void addInputPanel(String title, String format, String placeholder){
         title = String.format("%s:\t", title);
         MaskFormatter formatter = null;
         try {
@@ -38,16 +40,18 @@ public class AutorizationGUI extends CoreGUI {
         JLabel txt = new JLabel(title);
         txt.setFont(coreFont.deriveFont(12f));
         JFormattedTextField field = new JFormattedTextField(formatter);
+        field.setPreferredSize(new Dimension(250, 20));
+        field.setFocusLostBehavior(JFormattedTextField.PERSIST);
         panel.add(txt);
         panel.add(field);
         fields.add(field);
-        return panel;
+        corePane.add(panel);
     }
 
-    protected ArrayList<String> getUserInput(){
-        ArrayList<String> input = new ArrayList<>();
+    protected ArrayList<Object> getUserInput(){
+        ArrayList<Object> input = new ArrayList<>();
         for(JFormattedTextField field: fields){
-            input.add(field.getText());
+            input.add(field.getValue());
         }
         return input;
     }
