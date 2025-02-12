@@ -4,7 +4,7 @@ import java.security.*;
 import java.nio.charset.*;
 
 public class HashHandler {
-    public static String hash(String PIN) {
+    public static byte[] hash(String PIN) {
         String algorithm = "SHA-256";
         Charset charset = StandardCharsets.UTF_8;
         MessageDigest digest;
@@ -15,11 +15,10 @@ public class HashHandler {
             return null;
         }
         byte[] hashedBytes = digest.digest(PIN.getBytes(charset));
-        String hashedString = new StringBuilder(new String(hashedBytes, charset)).reverse().toString();
-        return hashedString;
+        return hashedBytes;
     }
 
-    public static boolean compare(String givenPIN, String expectedHash){
+    public static boolean compare(String givenPIN, byte[] expectedHash){
         return hash(givenPIN).equals(expectedHash);
     }
 }

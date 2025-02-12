@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.text.*;
 
+import com.atm.CommonDAO;
+
 public abstract class AutorizationGUI extends CoreGUI{
     private ArrayList<JTextField> fields = new ArrayList<>();
 
@@ -61,7 +63,7 @@ public abstract class AutorizationGUI extends CoreGUI{
             @Override
             public void keyTyped(KeyEvent e) {
                 char c = e.getKeyChar();
-                if (!(c >= 'A' && c <= 'Z')) {
+                if (c < 'A' || c > 'Z') {
                     e.consume();
                 }
             }
@@ -72,10 +74,26 @@ public abstract class AutorizationGUI extends CoreGUI{
         corePane.add(panel);
     }
 
+    // Версия addInputPanel() для создания нередактируемого поля с номером карты
+    protected void addInputPanel(String title){
+        title = String.format("%s:\t", title);
+        JPanel panel = new JPanel(new FlowLayout());
+        JLabel txt = new JLabel(title);
+        txt.setFont(coreFont.deriveFont(12f));
+        JTextField field = new JTextField(CommonDAO.generateCardNumber());
+        field.setPreferredSize(new Dimension(250, 20));
+        field.setEditable(false);
+
+        panel.add(txt);
+        panel.add(field);
+        fields.add(field);
+        corePane.add(panel);
+    }
+
     protected ArrayList<Object> getUserInput(){
         ArrayList<Object> input = new ArrayList<>();
         for(JTextComponent field: fields){
-            if(field instanceof JFormattedTextField){
+            if(field.getClass().equals(JFormattedTextField.class)){
                 JFormattedTextField formattedField = (JFormattedTextField)field;
                 try {
                     formattedField.commitEdit();

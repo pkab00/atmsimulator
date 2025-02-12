@@ -1,6 +1,8 @@
 package com.atm;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Random;
 
 enum REQUEST_TYPE{
     USERS,
@@ -24,12 +26,10 @@ public class CommonDAO {
         Connection conn = connect();
         String stat1 = "INSERT INTO USERS VALUES (?, ?, ?, ?, ?)";
         String stat2 = "INSERT INTO ACCOUNTS VALUES (?, 0.0, 100000.0)";
-        // Заменить эту строку на вызов метода хэширования
-        String PINhash = String.valueOf(PIN);
         try {
             PreparedStatement prepStat1 = conn.prepareStatement(stat1);
             prepStat1.setString(1, cardNumber);
-            prepStat1.setString(2, PINhash);
+            prepStat1.setBytes(2, HashHandler.hash(PIN));
             prepStat1.setString(3, surname);
             prepStat1.setString(4, name);
             prepStat1.setString(5, fatherName);
@@ -61,8 +61,7 @@ public class CommonDAO {
                         break;
                     case USERS:
                         outputDTO = new UserDTO()
-                        // добавить дехэширование
-                        .setPINhash(res.getString("PIN_HASH"))
+                        .setPINhash(res.getBytes("PIN_HASH"))
                         .setSurname(res.getString("SURNAME"))
                         .setName(res.getString("NAME"))
                         .setFatherName(res.getString("FATHER_NAME"));
@@ -79,11 +78,37 @@ public class CommonDAO {
         // TODO: убедиться, что res закрывается после использования
     }
 
-    public static void main(String[] args) {
-        User oleg = User.getNewUser("666666", "9999", 
-        "Sheps", "Oleg", "Nikolayevich");
-        System.out.println(oleg);
-        oleg = User.getExistingUser("9999", "666666");
-        System.out.println(oleg);
+    public static String generateCardNumber(){
+        String cardNumber = "";
+        ArrayList<String> existingNumbers = getCardNumbers();
+        Random gen = new Random();
+        do{
+            for(int i = 0; i < 4; i++){
+                String part = "";
+                for(int j = 0; j < 4; j++){
+                    part += gen.nextInt(10);
+                }
+                cardNumber += (part + " ");
+            }
+            cardNumber = cardNumber.substring(0, cardNumber.length()-1);
+        } while(existingNumbers.contains(cardNumber));
+        return cardNumber;
+    }
+
+    // Вспомогательный метод, получает существующие номера карт
+    private static ArrayList<String> getCardNumbers(){
+        ResultSet res = null;
+        ArrayList<String> output = new ArrayList<>();
+        String sql = "SELECT CARD_NUMBER FROM USERS";
+        try(Connection conn = connect()){
+            PreparedStatement statement = conn.prepareStatement(sql);
+            res = statement.executeQuery();
+            while (res.next()) {
+                output.add(res.getString("CARD_NUMBER"));
+            }
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return output;
     }
 }

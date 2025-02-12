@@ -29,6 +29,7 @@ public class LoginGUI extends AutorizationGUI {
 
         JButton goToRegistrationButton = new JButton("Регистрация");
         goToRegistrationButton.addActionListener((e) -> {
+            this.dispose();
             new CreateAccountGUI();
         });
         corePane.add(goToRegistrationButton);
