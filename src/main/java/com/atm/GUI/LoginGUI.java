@@ -1,19 +1,17 @@
 package com.atm.GUI;
 
-import java.awt.*;
-import java.util.concurrent.ExecutionException;
-
-import javax.swing.*;
-
 import com.atm.User;
+import java.util.concurrent.ExecutionException;
+import javax.swing.*;
 
 public class LoginGUI extends AutorizationGUI {
     public LoginGUI(){
         super("Вход");
-        compainUI();
+        composeUI();
     }
 
-    private void compainUI(){
+    @Override
+    protected void composeUI(){
         addInputPanel("НОМЕР КАРТЫ", 
         "#### #### #### ####", "0000 0000 0000 0000");
         addInputPanel("PIN КОД", "####", "0000");
@@ -31,7 +29,7 @@ public class LoginGUI extends AutorizationGUI {
 
         JButton goToRegistrationButton = new JButton("Регистрация");
         goToRegistrationButton.addActionListener((e) -> {
-            // добавить переход к окну регистрации
+            new CreateAccountGUI();
         });
         corePane.add(goToRegistrationButton);
     }
