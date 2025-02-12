@@ -41,7 +41,6 @@ public class AutorizationGUI extends CoreGUI {
         txt.setFont(coreFont.deriveFont(12f));
         JFormattedTextField field = new JFormattedTextField(formatter);
         field.setPreferredSize(new Dimension(250, 20));
-        field.setFocusLostBehavior(JFormattedTextField.PERSIST);
         panel.add(txt);
         panel.add(field);
         fields.add(field);
@@ -51,6 +50,11 @@ public class AutorizationGUI extends CoreGUI {
     protected ArrayList<Object> getUserInput(){
         ArrayList<Object> input = new ArrayList<>();
         for(JFormattedTextField field: fields){
+            try {
+                field.commitEdit();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             input.add(field.getValue());
         }
         return input;

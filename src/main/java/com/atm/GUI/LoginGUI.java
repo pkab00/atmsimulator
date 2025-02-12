@@ -3,6 +3,8 @@ package com.atm.GUI;
 import java.awt.*;
 import javax.swing.*;
 
+import com.atm.User;
+
 public class LoginGUI extends AutorizationGUI {
     public LoginGUI(){
         super("Вход");
@@ -17,7 +19,15 @@ public class LoginGUI extends AutorizationGUI {
         JButton submitButton = new JButton("Войти");
         submitButton.addActionListener(e -> {
             var data = getUserInput();
-            // добавить метод для запроса к БД
+            String cardNumber = (String)data.get(0);
+            String PIN = (String)data.get(1);
+            User newUser = User.getExistingUser(PIN, cardNumber);
+            if(newUser == null){
+                JOptionPane.showMessageDialog(this, "Пользователь не найден", "Ошибка", JOptionPane.WARNING_MESSAGE);
+            }
+            else{
+                // запуск сессии
+            }
         });
         corePane.add(submitButton);
 
@@ -28,8 +38,7 @@ public class LoginGUI extends AutorizationGUI {
 
         JButton goToRegistrationButton = new JButton("Регистрация");
         goToRegistrationButton.addActionListener((e) -> {
-            JFrame source = (JFrame)e.getSource();
-            source.dispose();
+            dispose();
             // добавить переход к окну регистрации
         });
         corePane.add(goToRegistrationButton);
