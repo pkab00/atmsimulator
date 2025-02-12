@@ -1,6 +1,5 @@
 package com.atm.GUI;
 
-import java.awt.CompositeContext;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.text.ParseException;
@@ -9,7 +8,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.text.*;
 
-public class AutorizationGUI extends CoreGUI {
+public abstract class AutorizationGUI extends CoreGUI{
     private ArrayList<JFormattedTextField> fields = new ArrayList<>();
 
     protected AutorizationGUI(String titleString){

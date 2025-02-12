@@ -1,6 +1,8 @@
 package com.atm.GUI;
 
 import java.awt.*;
+import java.util.concurrent.ExecutionException;
+
 import javax.swing.*;
 
 import com.atm.User;
@@ -18,16 +20,7 @@ public class LoginGUI extends AutorizationGUI {
 
         JButton submitButton = new JButton("Войти");
         submitButton.addActionListener(e -> {
-            var data = getUserInput();
-            String cardNumber = (String)data.get(0);
-            String PIN = (String)data.get(1);
-            User newUser = User.getExistingUser(PIN, cardNumber);
-            if(newUser == null){
-                JOptionPane.showMessageDialog(this, "Пользователь не найден", "Ошибка", JOptionPane.WARNING_MESSAGE);
-            }
-            else{
-                // запуск сессии
-            }
+            new DBAccessWorker().execute();
         });
         corePane.add(submitButton);
 
@@ -38,9 +31,35 @@ public class LoginGUI extends AutorizationGUI {
 
         JButton goToRegistrationButton = new JButton("Регистрация");
         goToRegistrationButton.addActionListener((e) -> {
-            dispose();
             // добавить переход к окну регистрации
         });
         corePane.add(goToRegistrationButton);
+    }
+
+    private class DBAccessWorker extends SwingWorker<User, Void>{
+        @Override
+        protected User doInBackground() throws Exception {
+            var data = getUserInput();
+            String cardNumber = (String)data.get(0);
+            String PIN = (String)data.get(1);
+            User newUser = User.getExistingUser(PIN, cardNumber);
+            return newUser;
+        }
+
+        @Override
+        protected void done(){
+            try {
+                User newUser = get();
+                if(newUser == null){
+                    JOptionPane.showMessageDialog(LoginGUI.this, "Пользователь не найден", "Ошибка", JOptionPane.WARNING_MESSAGE);
+                }
+                else{
+                    LoginGUI.this.dispose();
+                    // запуск сессии
+                }
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
