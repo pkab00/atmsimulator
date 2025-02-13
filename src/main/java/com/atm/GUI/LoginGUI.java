@@ -55,7 +55,7 @@ public class LoginGUI extends AutorizationGUI {
                 }
                 else{
                     LoginGUI.this.dispose();
-                    // запуск сессии
+                    new ATMSessionGUI(newUser);
                 }
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();

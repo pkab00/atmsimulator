@@ -13,6 +13,7 @@ public abstract class CoreGUI extends JFrame {
 
     protected CoreGUI(){
         setIconImage(new ImageIcon(GRAPHICS+"\\app-icon.png").getImage());
+        setSize(1000, 800);
         setVisible(true);
     }
 

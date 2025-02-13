@@ -26,9 +26,9 @@ public class CreateAccountGUI extends AutorizationGUI {
             String fatherName = (String)data.get(2);
             String cardNumber = (String)data.get(3);
             String PIN = (String)data.get(4);
-            User.getNewUser(cardNumber, PIN, surname, name, fatherName);
+            User user = User.getNewUser(cardNumber, PIN, surname, name, fatherName);
             this.dispose();
-            // запуск сессии
+            new ATMSessionGUI(user);
         });
         corePane.add(loginButton);
     }
