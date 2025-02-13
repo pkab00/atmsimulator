@@ -102,7 +102,7 @@ public abstract class AutorizationGUI extends CoreGUI{
                 }
                 input.add(formattedField.getValue());
             }
-            else if(field instanceof JTextField){
+            else if(field.getClass().equals(JTextField.class)){
                 JTextField plainField = (JTextField)field;
                 input.add(plainField.getText());
             }

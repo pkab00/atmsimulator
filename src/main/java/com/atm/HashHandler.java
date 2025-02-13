@@ -1,6 +1,7 @@
 package com.atm;
 
 import java.security.*;
+import java.util.Arrays;
 import java.nio.charset.*;
 
 public class HashHandler {
@@ -19,6 +20,6 @@ public class HashHandler {
     }
 
     public static boolean compare(String givenPIN, byte[] expectedHash){
-        return hash(givenPIN).equals(expectedHash);
+        return Arrays.equals(hash(givenPIN), expectedHash);
     }
 }

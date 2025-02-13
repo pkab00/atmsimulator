@@ -50,7 +50,8 @@ public class LoginGUI extends AutorizationGUI {
             try {
                 User newUser = get();
                 if(newUser == null){
-                    JOptionPane.showMessageDialog(LoginGUI.this, "Пользователь не найден", "Ошибка", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(LoginGUI.this, "Ошибка входа. Проверьте введённые данные.", 
+                    "Ошибка", JOptionPane.WARNING_MESSAGE);
                 }
                 else{
                     LoginGUI.this.dispose();
