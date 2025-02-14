@@ -1,5 +1,7 @@
 package com.atm;
 
+import java.security.InvalidParameterException;
+
 public class Account {
     private String cardNumber;
     private double balance;
@@ -33,14 +35,8 @@ public class Account {
         cardNumber, balance, withdrawLimit);
     }
 
-    public void increaseBalance(double money){
+    public void changeBalance(double money) throws InvalidParameterException{
         balance += money;
-    }
-
-    public void decreaseBalance(double money){
-        if(money >= balance && money < withdrawLimit){
-            balance -= money;
-        }
     }
 
     public String getCardNumber() {
