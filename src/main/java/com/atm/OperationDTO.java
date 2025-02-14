@@ -5,34 +5,37 @@ public class OperationDTO implements iDTO {
     private Account toAccount;
     private String dateTime;
     private double sum;
-
+    private boolean isCommited;
+    
     public Account getFromAccount() {
         return fromAccount;
     }
-    public OperationDTO setFromAccount(Account fromAccount) {
+    public void setFromAccount(Account fromAccount) {
         this.fromAccount = fromAccount;
-        return this;
     }
     public Account getToAccount() {
         return toAccount;
     }
-    public OperationDTO setToAccount(Account toAccount) {
+    public void setToAccount(Account toAccount) {
         this.toAccount = toAccount;
-        return this;
     }
     public String getDateTime() {
         return dateTime;
     }
-    public OperationDTO setDateTime(String dateTime) {
+    public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
-        return this;
     }
     public double getSum() {
         return sum;
     }
-    public OperationDTO setSum(double sum) {
+    public void setSum(double sum) {
         this.sum = sum;
-        return this;
+    }
+    public boolean isCommited() {
+        return isCommited;
+    }
+    public void setCommited(boolean isCommited) {
+        this.isCommited = isCommited;
     }
     
 }

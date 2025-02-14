@@ -1,6 +1,5 @@
 package com.atm;
 
-import java.security.InvalidParameterException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -9,19 +8,28 @@ public class Operation {
     private Account toAccount;
     private String dateTime;
     private double sum;
+    private boolean isCommited;
 
-    public Operation(User toUser, double sum) throws InvalidParameterException{
+    private class InvalidOperationException  extends Exception{
+        public InvalidOperationException(String message){
+            super(message);
+        }
+    }
+
+    public Operation(User toUser, double sum) throws InvalidOperationException{
         this.fromAccount = null;
         this.toAccount = toUser.getAccount();
         this.sum = sum;
+        this.isCommited = false;
 
         validate(toAccount, sum);
     }
 
-    public Operation(User toUser, User fromUser, double sum) throws InvalidParameterException{
+    public Operation(User toUser, User fromUser, double sum) throws InvalidOperationException{
         this.fromAccount = fromUser.getAccount();
         this.toAccount = toUser.getAccount();
         this.sum = sum;
+        this.isCommited = false;
 
         validate(toAccount, sum);
         validate(fromAccount, -sum);
@@ -32,6 +40,7 @@ public class Operation {
         this.toAccount = DTO.getToAccount();
         this.sum = DTO.getSum();
         this.dateTime = DTO.getDateTime();
+        this.isCommited = DTO.isCommited();
     }
 
     @Override
@@ -47,20 +56,22 @@ public class Operation {
         }
     }
 
-    private void validate(Account acc, double sum) throws InvalidParameterException{
+    private void validate(Account acc, double sum) throws InvalidOperationException{
         if(sum < 0){
             if(acc.getBalance() + sum < 0){
-                throw new InvalidParameterException(String.format("%s: недостаточно средств на счету!",
+                throw new InvalidOperationException(String.format("%s: недостаточно средств на счету!",
                 acc.getCardNumber()));
             }
             else if(Math.abs(sum) > acc.getWithdrawLimit()){
-                throw new InvalidParameterException(String.format("%s: привышен лимит списания!",
+                throw new InvalidOperationException(String.format("%s: привышен лимит списания!",
                 acc.getCardNumber()));
             }
         }
     }
 
     public void commit(){
+         if(this.isCommited) return;
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd.MM.yyyy");
         if(fromAccount == null){
             toAccount.changeBalance(sum);
@@ -69,6 +80,9 @@ public class Operation {
             toAccount.changeBalance(sum);
         }
         this.dateTime = LocalDateTime.now().format(formatter);
+        this.isCommited = true;
+        CommonDAO.addOperation(dateTime, toAccount.getCardNumber(),
+        (fromAccount==null) ? null : fromAccount.getCardNumber(), sum);
     }
 
     public Account getFromAccount() {
@@ -91,22 +105,34 @@ public class Operation {
         this.dateTime = dateTime;
     }
 
+    public boolean isCommited(){
+        return isCommited;
+    }
+
     public static void main(String[] args) {
         User me = User.getExistingUser("1234", "7171 3045 4443 3989");
         User anotherUser = User.getExistingUser("6666", "0154 0963 9160 9316");
-        Operation getSomeMoney = new Operation(me, 100);
-        getSomeMoney.commit();
-        System.out.println(getSomeMoney);
-        Operation takeSomeMoney = new Operation(anotherUser, 50);
-        takeSomeMoney.commit();
-        System.out.println(takeSomeMoney);
+        try{
+            Operation getSomeMoney = new Operation(me, 100);
+            Operation takeSomeMoney = new Operation(anotherUser, 50);
+            getSomeMoney.commit();
+            System.out.println(getSomeMoney);
+            takeSomeMoney.commit();
+            System.out.println(takeSomeMoney);
+        } catch(InvalidOperationException e){
+            e.printStackTrace();
+        };;
         
         System.out.println(String.format("До перевода:\n%s: %.2f\n%s: %.2f",
         me.getFullName(), me.getAccount().getBalance(), anotherUser.getFullName(), anotherUser.getAccount().getBalance()));
 
-        Operation transaction = new Operation(me, anotherUser, 50);
-        transaction.commit();
-        System.out.println(transaction);
+        try{
+            Operation transaction = new Operation(me, anotherUser, 50);
+            transaction.commit();
+            System.out.println(transaction);
+        } catch(InvalidOperationException e){
+            e.printStackTrace();
+        }
 
         System.out.println(String.format("После перевода:\n%s: %.2f\n%s: %.2f",
         me.getFullName(), me.getAccount().getBalance(), anotherUser.getFullName(), anotherUser.getAccount().getBalance()));

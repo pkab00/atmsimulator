@@ -43,6 +43,20 @@ public class CommonDAO {
         };
     }
 
+    public static void addOperation(String dateTime, String toUser, String fromUser, double sum){
+        String sql = "INSERT INTO OPERATIONS VALUES (?, ?, ?, ?)";
+        try (Connection conn = connect()) {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, dateTime);
+            statement.setString(2, toUser);
+            statement.setString(3, fromUser);
+            statement.setDouble(4, sum);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static iDTO requestData(String cardNumber, REQUEST_TYPE type){
         ResultSet res = null;
         iDTO outputDTO = null;
