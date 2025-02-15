@@ -6,7 +6,8 @@ import java.util.Random;
 
 enum REQUEST_TYPE{
     USERS,
-    ACCOUNTS
+    ACCOUNTS,
+    OPERATIONS
 }
 
 public class CommonDAO {
@@ -57,21 +58,27 @@ public class CommonDAO {
         }
     }
 
-    public static iDTO requestData(String cardNumber, REQUEST_TYPE type){
+    public static ArrayList<iDTO> requestData(String cardNumber, REQUEST_TYPE type){
         ResultSet res = null;
         iDTO outputDTO = null;
-        String sql = "SELECT * FROM " + type.toString() + " WHERE CARD_NUMBER = ?";
+        ArrayList<iDTO> outputList = new ArrayList<>();
+        String sql;
+        if(type != REQUEST_TYPE.OPERATIONS){
+            sql = String.format("SELECT * FROM %s WHERE CARD_NUMBER = \"%s\"", type.toString(), cardNumber);
+        } else{
+            sql = String.format("SELECT * FROM OPERATIONS WHERE TO_USER = \"%s\" OR FROM_USER = \"%s\"", cardNumber, cardNumber);
+        }
         try(Connection conn = connect()) {
             PreparedStatement prep = conn.prepareStatement(sql);
-            prep.setString(1, cardNumber);
             res = prep.executeQuery();
-            if(res.next()){
+            while(res.next()){
                 switch(type){
                     case ACCOUNTS:
                         outputDTO = new AccountDTO()
                         .setCardNumber(res.getString("CARD_NUMBER"))
                         .setBalance(res.getDouble("BALANCE"))
                         .setWithdrawLimit(res.getDouble("LIMIT"));
+                        outputList.add((AccountDTO)outputDTO);
                         break;
                     case USERS:
                         outputDTO = new UserDTO()
@@ -79,16 +86,23 @@ public class CommonDAO {
                         .setSurname(res.getString("SURNAME"))
                         .setName(res.getString("NAME"))
                         .setFatherName(res.getString("FATHER_NAME"));
+                        outputList.add((UserDTO)outputDTO);
+                        break;
+                    case OPERATIONS:
+                        outputDTO = new OperationDTO()
+                        .setDateTime(res.getString("DATE_TIME"))
+                        .setToCardNumber(res.getString("TO_USER"))
+                        .setFromCardNumber(res.getString("FROM_USER"))
+                        .setSum(res.getDouble("SUM"))
+                        .setCommited(true);
+                        outputList.add((OperationDTO)outputDTO);
                         break;
                 }
-            }
-            else{
-                res = null;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return outputDTO;
+        return outputList;
         // TODO: убедиться, что res закрывается после использования
     }
 

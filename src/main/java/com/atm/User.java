@@ -30,8 +30,8 @@ public class User {
     // Принимает пин-код и номер карты, осуществляет запрос к БД через DAO
     // При несоответствии данных возвращает null
     public static User getExistingUser(String PIN, String cardNumber){
-        UserDTO userData = (UserDTO)CommonDAO.requestData(cardNumber, REQUEST_TYPE.USERS);
-        AccountDTO accountData = (AccountDTO)CommonDAO.requestData(cardNumber, REQUEST_TYPE.ACCOUNTS);
+        UserDTO userData = (UserDTO)CommonDAO.requestData(cardNumber, REQUEST_TYPE.USERS).get(0);
+        AccountDTO accountData = (AccountDTO)CommonDAO.requestData(cardNumber, REQUEST_TYPE.ACCOUNTS).get(0);
 
         if(userData == null || accountData == null) return null;
         if(!HashHandler.compare(PIN, userData.getPINhash())){

@@ -2,6 +2,7 @@ package com.atm;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class Operation {
     private Account fromAccount;
@@ -36,8 +37,10 @@ public class Operation {
     }
 
     public Operation(OperationDTO DTO){
-        this.fromAccount = DTO.getFromAccount();
-        this.toAccount = DTO.getToAccount();
+        this.fromAccount = Account.getExistingAccount((AccountDTO)CommonDAO.requestData(DTO.getFromCardNumber(),
+                                                                        REQUEST_TYPE.ACCOUNTS).get(0));
+        this.toAccount = Account.getExistingAccount((AccountDTO)CommonDAO.requestData(DTO.getToCardNumber(),
+                                                                        REQUEST_TYPE.ACCOUNTS).get(0));
         this.sum = DTO.getSum();
         this.dateTime = DTO.getDateTime();
         this.isCommited = DTO.isCommited();
@@ -85,6 +88,15 @@ public class Operation {
         (fromAccount==null) ? null : fromAccount.getCardNumber(), sum);
     }
 
+    public static ArrayList<String> getLog(String cardNumber){
+        ArrayList<String> log = new ArrayList<>();
+        for(iDTO i: CommonDAO.requestData(cardNumber, REQUEST_TYPE.OPERATIONS)){
+            OperationDTO op = (OperationDTO)i;
+            log.add(op.toString());
+        }
+        return log;
+    }
+
     public Account getFromAccount() {
         return fromAccount;
     }
@@ -110,31 +122,8 @@ public class Operation {
     }
 
     public static void main(String[] args) {
-        User me = User.getExistingUser("1234", "7171 3045 4443 3989");
-        User anotherUser = User.getExistingUser("6666", "0154 0963 9160 9316");
-        try{
-            Operation getSomeMoney = new Operation(me, 100);
-            Operation takeSomeMoney = new Operation(anotherUser, 50);
-            getSomeMoney.commit();
-            System.out.println(getSomeMoney);
-            takeSomeMoney.commit();
-            System.out.println(takeSomeMoney);
-        } catch(InvalidOperationException e){
-            e.printStackTrace();
-        };;
-        
-        System.out.println(String.format("До перевода:\n%s: %.2f\n%s: %.2f",
-        me.getFullName(), me.getAccount().getBalance(), anotherUser.getFullName(), anotherUser.getAccount().getBalance()));
-
-        try{
-            Operation transaction = new Operation(me, anotherUser, 50);
-            transaction.commit();
-            System.out.println(transaction);
-        } catch(InvalidOperationException e){
-            e.printStackTrace();
+        for(String str: getLog("7171 3045 4443 3989")){
+            System.out.println(str);
         }
-
-        System.out.println(String.format("После перевода:\n%s: %.2f\n%s: %.2f",
-        me.getFullName(), me.getAccount().getBalance(), anotherUser.getFullName(), anotherUser.getAccount().getBalance()));
     }
 }
