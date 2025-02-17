@@ -1,13 +1,10 @@
 package com.atm.GUI;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.function.Function;
-
 import javax.swing.*;
-
 import com.atm.Account;
 import com.atm.User;
 import com.atm.GUI.operations.ReplenishmentGUI;

@@ -1,7 +1,6 @@
 package com.atm.GUI.operations;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
 
+import javax.swing.JButton;
 import com.atm.*;
 import com.atm.GUI.*;
 
@@ -23,8 +22,7 @@ public class TransactionGUI extends UserInputGUI {
             var input = getUserInput();
             Account sendtoAccount = Account.getExistingAccount((String)input.get(0));
             if(sendtoAccount == null){
-                JOptionPane.showMessageDialog(this, "Пользователь с таким номером карты не найден.",
-                "Ошибка", JOptionPane.ERROR_MESSAGE);
+                showWarning(this, "Пользователь с таким номером карты не найден.");
                 return;
             }
             try{
@@ -35,12 +33,10 @@ public class TransactionGUI extends UserInputGUI {
                 System.out.println(sendtoAccount);
                 dispose();
             } catch(NumberFormatException ex){
-                JOptionPane.showMessageDialog(this, "Введите целое или десятичное число через точку.",
-                "Ошибка", JOptionPane.ERROR_MESSAGE);
+                showWarning(this, "Введите целое или десятичное число через точку.");
                 ex.printStackTrace();
             } catch(Operation.InvalidOperationException ex){
-                JOptionPane.showMessageDialog(this, ex.getMessage(),
-                "Ошибка", JOptionPane.ERROR_MESSAGE);
+                showWarning(this, ex.getMessage());
                 ex.printStackTrace();
             }
         });

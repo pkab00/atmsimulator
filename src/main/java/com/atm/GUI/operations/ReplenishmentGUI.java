@@ -26,13 +26,10 @@ public class ReplenishmentGUI extends UserInputGUI {
                 System.out.println(acc);
                 dispose();
             } catch(NumberFormatException ex){
-                JOptionPane.showMessageDialog(this, "Введите целое или десятичное число через точку.",
-                "Ошибка", JOptionPane.ERROR_MESSAGE);
+                showWarning(this, "Введите целое или десятичное число через точку.");
                 ex.printStackTrace();
             } catch(Operation.InvalidOperationException ex){
-                JOptionPane.showMessageDialog(this, ex.getMessage(),
-                "Ошибка", JOptionPane.ERROR_MESSAGE);
-                ex.printStackTrace();
+                showWarning(this, ex.getMessage());
             }
         });
         corePane.add(submitButton);

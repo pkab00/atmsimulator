@@ -1,11 +1,8 @@
 package com.atm.GUI.operations;
 
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
-
 import com.atm.Account;
 import com.atm.Operation;
-import com.atm.User;
 import com.atm.GUI.UserInputGUI;
 
 public class WithdrawialGUI extends UserInputGUI {
@@ -28,12 +25,10 @@ public class WithdrawialGUI extends UserInputGUI {
                 System.out.println(acc);
                 dispose();
             } catch(NumberFormatException ex){
-                JOptionPane.showMessageDialog(this, "Введите целое или десятичное число через точку.",
-                "Ошибка", JOptionPane.ERROR_MESSAGE);
+                showWarning(this, "Введите целое или десятичное число через точку.");
                 ex.printStackTrace();
             } catch(Operation.InvalidOperationException ex){
-                JOptionPane.showMessageDialog(this, ex.getMessage(),
-                "Ошибка", JOptionPane.ERROR_MESSAGE);
+                showWarning(this, ex.getMessage());
                 ex.printStackTrace();
             }
         });

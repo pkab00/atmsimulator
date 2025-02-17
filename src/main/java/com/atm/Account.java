@@ -1,7 +1,5 @@
 package com.atm;
 
-import java.security.InvalidParameterException;
-
 public class Account {
     private String cardNumber;
     private double balance;

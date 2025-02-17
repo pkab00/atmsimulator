@@ -131,4 +131,9 @@ public abstract class UserInputGUI extends CoreGUI{
         }
         return input;
     }
+
+    protected static void showWarning(UserInputGUI screen, String text){
+        JOptionPane.showMessageDialog(screen, text,
+                "Ошибка", JOptionPane.ERROR_MESSAGE);
+    }
 }
