@@ -120,10 +120,4 @@ public class Operation {
     public boolean isCommited(){
         return isCommited;
     }
-
-    public static void main(String[] args) {
-        for(String str: getLog("7171 3045 4443 3989")){
-            System.out.println(str);
-        }
-    }
 }

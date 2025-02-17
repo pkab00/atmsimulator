@@ -8,7 +8,7 @@ import javax.swing.SwingWorker;
 
 import com.atm.User;
 
-public class CreateAccountGUI extends AutorizationGUI {
+public class CreateAccountGUI extends UserInputGUI {
     public CreateAccountGUI(){
         super("Регистрация");
         composeUI();
@@ -16,11 +16,11 @@ public class CreateAccountGUI extends AutorizationGUI {
 
     @Override
     protected void composeUI() {
-        addInputPanel("ФАМИЛИЯ", "IVANOV");
-        addInputPanel("ИМЯ", "IVAN");
-        addInputPanel("ОТЧЕСТВО", "IVANOVICH");
-        addInputPanel("НОМЕР КАРТЫ");
-        addInputPanel("PIN", "####", "0000");
+        addUpcaseInputPanel("ФАМИЛИЯ", "IVANOV");
+        addUpcaseInputPanel("ИМЯ", "IVAN");
+        addUpcaseInputPanel("ОТЧЕСТВО", "IVANOVICH");
+        addFixatedInputPanel("НОМЕР КАРТЫ");
+        addFormattedInputPanel("PIN", "####", "0000");
 
         JButton loginButton = new JButton("Зарегистрироваться");
         loginButton.addActionListener((e) -> {

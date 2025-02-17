@@ -4,7 +4,7 @@ import com.atm.User;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
-public class LoginGUI extends AutorizationGUI {
+public class LoginGUI extends UserInputGUI {
     public LoginGUI(){
         super("Вход");
         composeUI();
@@ -12,9 +12,9 @@ public class LoginGUI extends AutorizationGUI {
 
     @Override
     protected void composeUI(){
-        addInputPanel("НОМЕР КАРТЫ", 
+        addFormattedInputPanel("НОМЕР КАРТЫ", 
         "#### #### #### ####", "0000 0000 0000 0000");
-        addInputPanel("PIN КОД", "####", "0000");
+        addFormattedInputPanel("PIN КОД", "####", "0000");
 
         JButton submitButton = new JButton("Войти");
         submitButton.addActionListener(e -> {

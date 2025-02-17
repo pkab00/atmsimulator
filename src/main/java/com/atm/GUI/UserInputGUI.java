@@ -4,18 +4,17 @@ import java.awt.*;
 import java.awt.event.*;
 import java.text.ParseException;
 import java.util.ArrayList;
-
 import javax.swing.*;
 import javax.swing.text.*;
 
 import com.atm.CommonDAO;
 
-public abstract class AutorizationGUI extends CoreGUI{
+public abstract class UserInputGUI extends CoreGUI{
     private ArrayList<JTextField> fields = new ArrayList<>();
 
     protected abstract void composeUI();
 
-    protected AutorizationGUI(String titleString){
+    protected UserInputGUI(String titleString){
         super();
         setTitle(titleString);
         setSize(500, 700);
@@ -31,7 +30,7 @@ public abstract class AutorizationGUI extends CoreGUI{
     }
 
     // Версия addInputPanel() для ввода числовго знвчения по шаблону
-    protected void addInputPanel(String title, String format, String placeholder){
+    protected void addFormattedInputPanel(String title, String format, String placeholder){
         title = String.format("%s:\t", title);
         MaskFormatter formatter = null;
         try {
@@ -52,7 +51,7 @@ public abstract class AutorizationGUI extends CoreGUI{
     }
 
     // Версия addInputPanel() для ввода строки заглавных латинских букв
-    protected void addInputPanel(String title, String placeholder){
+    protected void addUpcaseInputPanel(String title, String placeholder){
         title = String.format("%s:\t", title);
         JPanel panel = new JPanel(new FlowLayout());
         JLabel txt = new JLabel(title);
@@ -75,7 +74,7 @@ public abstract class AutorizationGUI extends CoreGUI{
     }
 
     // Версия addInputPanel() для создания нередактируемого поля с номером карты
-    protected void addInputPanel(String title){
+    protected void addFixatedInputPanel(String title){
         title = String.format("%s:\t", title);
         JPanel panel = new JPanel(new FlowLayout());
         JLabel txt = new JLabel(title);
