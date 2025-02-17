@@ -1,8 +1,18 @@
 package com.atm.GUI;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+
 import javax.swing.*;
+
+import com.atm.Account;
 import com.atm.User;
+import com.atm.GUI.operations.ReplenishmentGUI;
+import com.atm.GUI.operations.TransactionGUI;
+import com.atm.GUI.operations.WithdrawialGUI;
 
 public class ATMSessionGUI extends CoreGUI {
     private User user;
@@ -37,9 +47,13 @@ public class ATMSessionGUI extends CoreGUI {
         balanceTextField.setEditable(false);
         balancePanel.add(balanceTextField);
 
-        String[] titles = {"Пополнить", "Снять", "Перевод", "Настройки"};
+        List<String> titles = List.of("Пополнить", "Снять", "Перевод", "История опреаций");
+        List<Function<Account, UserInputGUI>> constructors = List.of(
+            ReplenishmentGUI::new, WithdrawialGUI::new,
+            TransactionGUI::new, ReplenishmentGUI::new
+        );
         for(int i = 0; i < 4; i++){
-            JButton newButton = new JButton(titles[i]);
+            JButton newButton = new JButton(titles.get(i));
             newButton.setFont(coreFont.deriveFont(16f));
             newButton.setFocusPainted(false);
             if(i==0 || i==3){
@@ -49,6 +63,8 @@ public class ATMSessionGUI extends CoreGUI {
                 newButton.setForeground(Color.WHITE);
                 newButton.setBackground(Color.BLACK);
             }
+            final var constructor = constructors.get(i);
+            newButton.addActionListener((e) -> constructor.apply(user.getAccount()));
             balancePanel.add(newButton);
         }
 

@@ -29,7 +29,7 @@ public abstract class UserInputGUI extends CoreGUI{
         corePane.add(Box.createHorizontalStrut(1));
     }
 
-    // Версия addInputPanel() для ввода числовго знвчения по шаблону
+    // Создание текстового поля для ввода числовго знвчения по шаблону
     protected void addFormattedInputPanel(String title, String format, String placeholder){
         title = String.format("%s:\t", title);
         MaskFormatter formatter = null;
@@ -50,7 +50,7 @@ public abstract class UserInputGUI extends CoreGUI{
         corePane.add(panel);
     }
 
-    // Версия addInputPanel() для ввода строки заглавных латинских букв
+    // Создание текстового поля для ввода строки заглавных латинских букв
     protected void addUpcaseInputPanel(String title, String placeholder){
         title = String.format("%s:\t", title);
         JPanel panel = new JPanel(new FlowLayout());
@@ -73,7 +73,30 @@ public abstract class UserInputGUI extends CoreGUI{
         corePane.add(panel);
     }
 
-    // Версия addInputPanel() для создания нередактируемого поля с номером карты
+    // Создание текстового поля для ввода значения типа double
+    protected void addDoubleInputPanel(String title){
+        title = String.format("%s:\t", title);
+        JPanel panel = new JPanel(new FlowLayout());
+        JLabel txt = new JLabel(title);
+        txt.setFont(coreFont.deriveFont(12f));
+        JTextField field = new JTextField();
+        field.setPreferredSize(new Dimension(250, 20));
+        field.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if ((c < '0' || c > '9') && c != '.') {
+                    e.consume();
+                }
+            }
+        });
+        panel.add(txt);
+        panel.add(field);
+        fields.add(field);
+        corePane.add(panel);
+    }
+
+    // Создание нередактируемого текстового поля с номером карты
     protected void addFixatedInputPanel(String title){
         title = String.format("%s:\t", title);
         JPanel panel = new JPanel(new FlowLayout());

@@ -11,24 +11,24 @@ public class Operation {
     private double sum;
     private boolean isCommited;
 
-    private class InvalidOperationException  extends Exception{
+    public class InvalidOperationException  extends Exception{
         public InvalidOperationException(String message){
             super(message);
         }
     }
 
-    public Operation(User toUser, double sum) throws InvalidOperationException{
+    public Operation(Account toAccount, double sum) throws InvalidOperationException{
         this.fromAccount = null;
-        this.toAccount = toUser.getAccount();
+        this.toAccount = toAccount;
         this.sum = sum;
         this.isCommited = false;
 
         validate(toAccount, sum);
     }
 
-    public Operation(User toUser, User fromUser, double sum) throws InvalidOperationException{
-        this.fromAccount = fromUser.getAccount();
-        this.toAccount = toUser.getAccount();
+    public Operation(Account toAccount, Account fromAccount, double sum) throws InvalidOperationException{
+        this.fromAccount = fromAccount;
+        this.toAccount = toAccount;
         this.sum = sum;
         this.isCommited = false;
 

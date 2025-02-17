@@ -29,13 +29,20 @@ public class Account {
         return new Account(data.getCardNumber(), data.getBalance(), data.getWithdrawLimit());
     }
 
+    // Запрос существующего аккаунта по номеру карты
+    public static Account getExistingAccount(String cardNumber){
+        var request = CommonDAO.requestData(cardNumber, REQUEST_TYPE.ACCOUNTS);
+        if(request.isEmpty()) return null;
+        return getExistingAccount((AccountDTO)request.get(0));
+    }
+
     @Override
     public String toString(){
         return String.format("[\n\t\tCard number: %s\n\t\tBalance: %.2f\n\t\tLimit: %.2f\n\t]",
         cardNumber, balance, withdrawLimit);
     }
 
-    public void changeBalance(double money) throws InvalidParameterException{
+    public void changeBalance(double money){
         balance += money;
     }
 
