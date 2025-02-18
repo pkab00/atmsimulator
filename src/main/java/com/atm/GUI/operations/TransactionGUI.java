@@ -4,13 +4,13 @@ import javax.swing.JButton;
 import com.atm.*;
 import com.atm.GUI.*;
 
-public class TransactionGUI extends UserInputGUI {
-    private ATMSessionGUI parentGUI;
+public class TransactionGUI extends OperationGUI {
+    private ATMSessionGUI sessionGUI;
     private Account acc;
-    public TransactionGUI(ATMSessionGUI parentGUI){
+    public TransactionGUI(ATMSessionGUI sessionGUI){
         super("Совершить перевод");
-        this.parentGUI = parentGUI;
-        this.acc = parentGUI.getAccount();
+        this.sessionGUI = sessionGUI;
+        this.acc = sessionGUI.getAccount();
         composeUI();
     }
 
@@ -29,10 +29,7 @@ public class TransactionGUI extends UserInputGUI {
             }
             try{
                 double transactionSum = Double.parseDouble((String)input.get(1));
-                Operation newOp = new Operation(sendtoAccount, acc, transactionSum);
-                newOp.commit();
-                System.out.println(acc);
-                System.out.println(sendtoAccount);
+                new DoubleOperationWorker(acc, sendtoAccount, transactionSum, this).execute();;
                 dispose();
             } catch(NumberFormatException ex){
                 showWarning(this, "Введите целое или десятичное число через точку.");
@@ -43,5 +40,10 @@ public class TransactionGUI extends UserInputGUI {
             }
         });
         corePane.add(submitButtton);
+    }
+
+    @Override
+    public ATMSessionGUI getSessionGUI() {
+        return sessionGUI;
     }
 }
