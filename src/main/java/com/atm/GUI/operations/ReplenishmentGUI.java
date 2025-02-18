@@ -5,15 +5,15 @@ import javax.swing.*;
 import com.atm.Account;
 import com.atm.Operation;
 import com.atm.GUI.ATMSessionGUI;
-import com.atm.GUI.UserInputGUI;
 
-public class ReplenishmentGUI extends UserInputGUI {
-    private ATMSessionGUI parentGUI;
+public class ReplenishmentGUI extends OperationGUI {
+    private ATMSessionGUI sessionGUI;
     private Account acc;
-    public ReplenishmentGUI(ATMSessionGUI parentGUI){
+    public ReplenishmentGUI(ATMSessionGUI sessionGUI){
         super("Пополнить счёт");
-        this.parentGUI = parentGUI;
-        this.acc = parentGUI.getAccount();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.sessionGUI = sessionGUI;
+        this.acc = sessionGUI.getAccount();
         composeUI();
     }
 
@@ -24,10 +24,7 @@ public class ReplenishmentGUI extends UserInputGUI {
         submitButton.addActionListener((e) ->{
             try{
                 double input = Double.parseDouble((String)getUserInput().get(0));
-                Operation newOp = new Operation(acc, input);
-                newOp.commit();
-                System.out.println(acc);
-                dispose();
+                new SingleOperationWorker(acc, input, this).execute();
             } catch(NumberFormatException ex){
                 showWarning(this, "Введите целое или десятичное число через точку.");
                 ex.printStackTrace();
@@ -37,4 +34,11 @@ public class ReplenishmentGUI extends UserInputGUI {
         });
         corePane.add(submitButton);
     }
+
+    @Override
+    public ATMSessionGUI getSessionGUI() {
+        return sessionGUI;
+    }
+
+    
 }

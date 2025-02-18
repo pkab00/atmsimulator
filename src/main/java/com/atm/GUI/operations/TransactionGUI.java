@@ -12,7 +12,6 @@ public class TransactionGUI extends UserInputGUI {
         this.parentGUI = parentGUI;
         this.acc = parentGUI.getAccount();
         composeUI();
-        System.out.println();
     }
 
     @Override

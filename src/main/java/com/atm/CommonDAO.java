@@ -44,6 +44,18 @@ public class CommonDAO {
         };
     }
 
+    public static void updateBalance(Account acc){
+        String sql = "UPDATE ACCOUNTS SET BALANCE = ? WHERE CARD_NUMBER = ?";
+        try(Connection conn = connect()){
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setDouble(1, acc.getBalance());
+            statement.setString(2, acc.getCardNumber());
+            statement.executeUpdate();
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
     public static void addOperation(String dateTime, String toUser, String fromUser, double sum){
         String sql = "INSERT INTO OPERATIONS VALUES (?, ?, ?, ?)";
         try (Connection conn = connect()) {
