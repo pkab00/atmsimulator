@@ -1,15 +1,17 @@
 package com.atm.GUI.operations;
 
-import javax.swing.JButton;
+import javax.swing.*;
+
 import com.atm.Account;
 import com.atm.Operation;
 import com.atm.GUI.ATMSessionGUI;
 
-public class WithdrawialGUI extends OperationGUI {
+public class DepositGUI extends OperationGUI {
     private ATMSessionGUI sessionGUI;
     private Account acc;
-    public WithdrawialGUI(ATMSessionGUI sessionGUI){
-        super("Снять средства");
+    public DepositGUI(ATMSessionGUI sessionGUI){
+        super("Пополнить счёт");
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.sessionGUI = sessionGUI;
         this.acc = sessionGUI.getAccount();
         composeUI();
@@ -21,14 +23,13 @@ public class WithdrawialGUI extends OperationGUI {
         JButton submitButton = new JButton("ОК");
         submitButton.addActionListener((e) ->{
             try{
-                double input = 0 - Double.parseDouble((String)getUserInput().get(0));
+                double input = Double.parseDouble((String)getUserInput().get(0));
                 new SingleOperationWorker(acc, input, this).execute();
             } catch(NumberFormatException ex){
                 showWarning(this, "Введите целое или десятичное число через точку.");
                 ex.printStackTrace();
             } catch(Operation.InvalidOperationException ex){
                 showWarning(this, ex.getMessage());
-                ex.printStackTrace();
             }
         });
         corePane.add(submitButton);
@@ -38,4 +39,6 @@ public class WithdrawialGUI extends OperationGUI {
     public ATMSessionGUI getSessionGUI() {
         return sessionGUI;
     }
+
+    
 }
