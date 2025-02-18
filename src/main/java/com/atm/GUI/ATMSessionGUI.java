@@ -13,6 +13,7 @@ import com.atm.GUI.operations.WithdrawialGUI;
 
 public class ATMSessionGUI extends CoreGUI {
     private User user;
+    private JTextField balanceTextField;
 
     public ATMSessionGUI(User user){
         super();
@@ -39,13 +40,13 @@ public class ATMSessionGUI extends CoreGUI {
         balanceLabel.setFont(coreFont.deriveFont(16f));
         balancePanel.add(balanceLabel);
 
-        JTextField balanceTextField = new JTextField(String.valueOf(user.getAccount().getBalance())+" ₽");
+        balanceTextField = new JTextField(String.valueOf(user.getAccount().getBalance())+" ₽");
         balanceTextField.setFont(coreFont.deriveFont(16f));
         balanceTextField.setEditable(false);
         balancePanel.add(balanceTextField);
 
         List<String> titles = List.of("Пополнить", "Снять", "Перевод", "История опреаций");
-        List<Function<Account, UserInputGUI>> constructors = List.of(
+        List<Function<ATMSessionGUI, UserInputGUI>> constructors = List.of(
             ReplenishmentGUI::new, WithdrawialGUI::new,
             TransactionGUI::new, ReplenishmentGUI::new
         );
@@ -61,10 +62,18 @@ public class ATMSessionGUI extends CoreGUI {
                 newButton.setBackground(Color.BLACK);
             }
             final var constructor = constructors.get(i);
-            newButton.addActionListener((e) -> constructor.apply(user.getAccount()));
+            newButton.addActionListener((e) -> constructor.apply(this));
             balancePanel.add(newButton);
         }
 
         return balancePanel;
+    }
+
+    public void updateBalanceLabel(){
+        balanceTextField.setText(String.valueOf(user.getAccount().getBalance())+" ₽");
+    }
+
+    public Account getAccount(){
+        return user.getAccount();
     }
 }

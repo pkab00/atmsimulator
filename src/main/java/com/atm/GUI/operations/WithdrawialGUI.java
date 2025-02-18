@@ -3,13 +3,16 @@ package com.atm.GUI.operations;
 import javax.swing.JButton;
 import com.atm.Account;
 import com.atm.Operation;
+import com.atm.GUI.ATMSessionGUI;
 import com.atm.GUI.UserInputGUI;
 
 public class WithdrawialGUI extends UserInputGUI {
+    private ATMSessionGUI parentGUI;
     private Account acc;
-    public WithdrawialGUI(Account acc){
+    public WithdrawialGUI(ATMSessionGUI parentGUI){
         super("Снять средства");
-        this.acc = acc;
+        this.parentGUI = parentGUI;
+        this.acc = parentGUI.getAccount();
         composeUI();
     }
 

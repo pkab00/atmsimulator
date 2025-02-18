@@ -4,13 +4,16 @@ import javax.swing.*;
 
 import com.atm.Account;
 import com.atm.Operation;
+import com.atm.GUI.ATMSessionGUI;
 import com.atm.GUI.UserInputGUI;
 
 public class ReplenishmentGUI extends UserInputGUI {
+    private ATMSessionGUI parentGUI;
     private Account acc;
-    public ReplenishmentGUI(Account acc){
+    public ReplenishmentGUI(ATMSessionGUI parentGUI){
         super("Пополнить счёт");
-        this.acc = acc;
+        this.parentGUI = parentGUI;
+        this.acc = parentGUI.getAccount();
         composeUI();
     }
 

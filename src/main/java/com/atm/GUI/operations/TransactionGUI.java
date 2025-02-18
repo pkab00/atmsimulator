@@ -5,11 +5,14 @@ import com.atm.*;
 import com.atm.GUI.*;
 
 public class TransactionGUI extends UserInputGUI {
+    private ATMSessionGUI parentGUI;
     private Account acc;
-    public TransactionGUI(Account acc){
+    public TransactionGUI(ATMSessionGUI parentGUI){
         super("Совершить перевод");
-        this.acc = acc;
+        this.parentGUI = parentGUI;
+        this.acc = parentGUI.getAccount();
         composeUI();
+        System.out.println();
     }
 
     @Override
