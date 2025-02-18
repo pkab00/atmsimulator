@@ -8,6 +8,7 @@ import javax.swing.*;
 import com.atm.Account;
 import com.atm.User;
 import com.atm.GUI.operations.DepositGUI;
+import com.atm.GUI.operations.OperationLogGUI;
 import com.atm.GUI.operations.TransactionGUI;
 import com.atm.GUI.operations.WithdrawGUI;
 
@@ -48,7 +49,7 @@ public class ATMSessionGUI extends CoreGUI {
         List<String> titles = List.of("Пополнить", "Снять", "Перевод", "История опреаций");
         List<Function<ATMSessionGUI, UserInputGUI>> constructors = List.of(
             DepositGUI::new, WithdrawGUI::new,
-            TransactionGUI::new, DepositGUI::new
+            TransactionGUI::new, OperationLogGUI::new
         );
         for(int i = 0; i < 4; i++){
             JButton newButton = new JButton(titles.get(i));

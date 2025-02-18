@@ -38,9 +38,9 @@ public class Operation {
 
     public Operation(OperationDTO DTO){
         this.fromAccount = Account.getExistingAccount((AccountDTO)CommonDAO.requestData(DTO.getFromCardNumber(),
-                                                                        REQUEST_TYPE.ACCOUNTS).get(0));
+                                                            REQUEST_TYPE.ACCOUNTS).get(0));
         this.toAccount = Account.getExistingAccount((AccountDTO)CommonDAO.requestData(DTO.getToCardNumber(),
-                                                                        REQUEST_TYPE.ACCOUNTS).get(0));
+                                                            REQUEST_TYPE.ACCOUNTS).get(0));
         this.sum = DTO.getSum();
         this.dateTime = DTO.getDateTime();
         this.isCommited = DTO.isCommited();

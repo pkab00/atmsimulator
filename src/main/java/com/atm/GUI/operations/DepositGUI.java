@@ -11,7 +11,6 @@ public class DepositGUI extends OperationGUI {
     private Account acc;
     public DepositGUI(ATMSessionGUI sessionGUI){
         super("Пополнить счёт");
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.sessionGUI = sessionGUI;
         this.acc = sessionGUI.getAccount();
         composeUI();

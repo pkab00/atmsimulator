@@ -4,12 +4,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-enum REQUEST_TYPE{
-    USERS,
-    ACCOUNTS,
-    OPERATIONS
-}
-
 public class CommonDAO {
     private static final String DB_URL = "jdbc:sqlite:src\\main\\resources\\database.db";
 
