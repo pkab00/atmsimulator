@@ -1,5 +1,8 @@
 package com.atm;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -17,6 +20,16 @@ public class CommonDAO {
         return conn;
     }
 
+    @SuppressWarnings("unchecked")
+    public static <T extends iDTO> T deserealizeDTO(T obj){
+        try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(obj.getFullFileName()))) {
+            T finalDTO = (T)objectInputStream.readObject();
+            return finalDTO;
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     public static void addNewUser(String cardNumber, String PIN, String surname, String name, String fatherName){
         Connection conn = connect();
         String stat1 = "INSERT INTO USERS VALUES (?, ?, ?, ?, ?)";

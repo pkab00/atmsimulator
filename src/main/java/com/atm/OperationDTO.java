@@ -57,5 +57,10 @@ public class OperationDTO implements iDTO {
         this.isCommited = isCommited;
         return this;
     }
+
+    @Override
+    public String getFileName() {
+        return "_operation ("+getDateTime()+").ser";
+    }
     
 }

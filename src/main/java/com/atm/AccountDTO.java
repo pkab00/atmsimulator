@@ -1,6 +1,6 @@
 package com.atm;
 
-public class AccountDTO implements iDTO {
+public class AccountDTO implements iDTO{
     private String cardNumber;
     private double balance;
     private double withdrawLimit;
@@ -32,5 +32,10 @@ public class AccountDTO implements iDTO {
     public AccountDTO setWithdrawLimit(double withdrawLimit) {
         this.withdrawLimit = withdrawLimit;
         return this;
+    }
+
+    @Override
+    public String getFileName() {
+        return "_account.ser";
     }
 }

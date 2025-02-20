@@ -45,4 +45,9 @@ public class UserDTO implements iDTO {
         this.fatherName = fatherName;
         return this;
     }
+
+    @Override
+    public String getFileName() {
+        return "_user.ser";
+    }
 }
