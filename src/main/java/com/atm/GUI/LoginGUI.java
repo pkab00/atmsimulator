@@ -5,6 +5,8 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
 public class LoginGUI extends UserInputGUI {
+    private JCheckBox saveCheckBox;
+
     public LoginGUI(){
         super("Вход");
         composeUI();
@@ -16,13 +18,16 @@ public class LoginGUI extends UserInputGUI {
         "#### #### #### ####", "0000 0000 0000 0000");
         addFormattedInputPanel("PIN КОД", "####", "0000");
 
+        saveCheckBox = new JCheckBox("Запомнить меня");
+        corePane.add(saveCheckBox);
+
         JButton submitButton = new JButton("Войти");
         submitButton.addActionListener(e -> {
             new DBAccessWorker().execute();
         });
         corePane.add(submitButton);
 
-        JLabel noAccountLabel = new JLabel("Ещё нет акаунта?");
+        JLabel noAccountLabel = new JLabel("Ещё нет аккаунта?");
         noAccountLabel.setFont(coreFont.deriveFont(16f));
         corePane.add(Box.createHorizontalStrut(1));
         corePane.add(noAccountLabel);
@@ -41,7 +46,7 @@ public class LoginGUI extends UserInputGUI {
             var data = getUserInput();
             String cardNumber = (String)data.get(0);
             String PIN = (String)data.get(1);
-            User newUser = User.getExistingUser(PIN, cardNumber);
+            User newUser = User.getExistingUser(PIN, cardNumber, saveCheckBox.isSelected());
             return newUser;
         }
 

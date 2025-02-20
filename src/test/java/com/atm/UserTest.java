@@ -28,7 +28,7 @@ class UserTest {
         User.getNewUser(cardNumber, PIN, surname, name, fatherName);
         
         // Test retrieval
-        User user = User.getExistingUser(PIN, cardNumber);
+        User user = User.getExistingUser(PIN, cardNumber, false);
         assertNotNull(user);
         assertEquals("Doe", user.getSurname());
         assertEquals("John", user.getName());

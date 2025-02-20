@@ -29,7 +29,7 @@ public class User {
     // Фабричный метод для преобразования DTO в User
     // Принимает пин-код и номер карты, осуществляет запрос к БД через DAO
     // При несоответствии данных возвращает null
-    public static User getExistingUser(String PIN, String cardNumber){
+    public static User getExistingUser(String PIN, String cardNumber, boolean save){
         UserDTO userData = (UserDTO)CommonDAO.requestData(cardNumber, REQUEST_TYPE.USERS).get(0);
         AccountDTO accountData = (AccountDTO)CommonDAO.requestData(cardNumber, REQUEST_TYPE.ACCOUNTS).get(0);
 
@@ -37,6 +37,22 @@ public class User {
         if(!HashHandler.compare(PIN, userData.getPINhash())){
             return null;
         }
+
+        if(save){
+            userData.serialize();
+        }
+
+        User newUser = new User(userData.getSurname(), userData.getName(), userData.getFatherName(), accountData);
+        return newUser;
+    }
+
+    public static User loadSavedData(){
+        UserDTO userData = new UserDTO();
+        userData = CommonDAO.deserealizeDTO(userData);
+
+        if(userData==null) return null;
+
+        AccountDTO accountData = (AccountDTO)CommonDAO.requestData(userData.getCardNumber(), REQUEST_TYPE.ACCOUNTS).get(0);
         User newUser = new User(userData.getSurname(), userData.getName(), userData.getFatherName(), accountData);
         return newUser;
     }

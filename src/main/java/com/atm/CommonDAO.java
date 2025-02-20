@@ -101,6 +101,7 @@ public class CommonDAO {
                         break;
                     case USERS:
                         outputDTO = new UserDTO()
+                        .setCardNumber(res.getString("CARD_NUMBER"))
                         .setPINhash(res.getBytes("PIN_HASH"))
                         .setSurname(res.getString("SURNAME"))
                         .setName(res.getString("NAME"))

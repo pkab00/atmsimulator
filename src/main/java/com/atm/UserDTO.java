@@ -2,6 +2,7 @@ package com.atm;
 
 public class UserDTO implements iDTO {
     private byte[] PINhash;
+    private String cardNumber;
     private String surname;
     private String name;
     private String fatherName;
@@ -43,6 +44,15 @@ public class UserDTO implements iDTO {
 
     public UserDTO setFatherName(String fatherName) {
         this.fatherName = fatherName;
+        return this;
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public UserDTO setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
         return this;
     }
 
